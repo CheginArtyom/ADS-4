@@ -22,34 +22,33 @@ c++;
 return c;
 }
 int countPairs3(int *arr, int len, int value) {
-int h = size - 1;
-int l = 0;
-int mid;
-int c = 0;
-for (int i = 0; i < size; i++) {
-while (l <= h) {
-mid = (l + h) / 2;
-if (value == arr[mid] + arr[i]) {
-l = h = mid;
-l--;
-while (value == arr[h] + arr[i]) {
-c++;
-h++;
-}
-while (value == arr[l] + arr[i] && l != i) {
-c++;
-l--;
-}
-}else
-if (value > arr[mid] + arr[i]) {
-l = mid + 1;
-}else
-if (value < arr[mid] + arr[i]) {
-h = mid - 1;
-}
-}
-l = i;
-h = size - 1;
-}
-return c;
+    int count = 0;
+    for (int i = 0; i < len - 1; i++) {
+        int low = i;
+        int top = len;
+        while (low < top-1) {
+            int mid = (low + top) / 2;
+            if (arr[i] + arr[mid] == value) {
+                ++count;
+                int j = mid + 1;
+                while (arr[i] + arr[j] == value && j < top) {
+                    ++count;
+                    ++j;
+                }
+                j = mid - 1;
+                while (arr[i] + arr[j] == value && j > low) {
+                    ++count;
+                    --j;
+                }
+                break;
+            }
+            if (arr[i] + arr[mid] < value)
+                low = mid;
+            if (arr[i] + arr[mid] > value)
+                top = mid;
+        }
+    }
+    if (count != 0)
+        return count;
+    return 0;
 }
